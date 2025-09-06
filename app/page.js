@@ -1,8 +1,5 @@
-import ToolsKillts from "./pages/Skills/ToolsKillts";
 import ProjecPage from "./pages/Projects/page";
-import Navber from "./pages/NavBar/navber";
 import Homepage from "./pages/home/page";
-import Toggle from "./Theme/Toggle";
 
 export default function MainApp() {
   return (
@@ -13,12 +10,10 @@ export default function MainApp() {
       >
         <div className="animate-gradient-x absolute inset-0 bg-gradient-to-r from-fuchsia-600 to-pink-600" />
       </div>
-      <div className="  min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 flex items-center justify-center">
-        {/* <Navber /> */}
+
+      <div className="min-h-screen flex flex-col items-start justify-center gap-8 text-gray-900 dark:text-gray-100">
         <Homepage />
-        {/* <ToolsKillts /> */}
         <ProjecPage />
-        {/* <Toggle /> */}
       </div>
     </div>
   );
