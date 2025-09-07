@@ -1,42 +1,57 @@
 "use client";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import ProjectCard from "./projectCard";
+import axios from "axios";
 
-const ProjectFillterBtn = ({ projects }) => {
-  const categories = useMemo(
-    () => Array.from(new Set(projects.map((p) => p.category))),
-    [projects]
-  );
+const ProjectFilterBtn = () => {
+  const [projects, setProjects] = useState([]); // All projects from API
+  const [categories, setCategories] = useState([]); // All unique categories
+  const [activeCategory, setActiveCategory] = useState(""); // Current selected category
 
-  const [activeCategory, setActiveCategory] = useState("");
-
+  // Fetch projects once when component loads
   useEffect(() => {
-    if (categories.length) {
-      setActiveCategory(categories[0]);
-    }
-  }, [categories]);
+    axios
+      .get(
+        "https://raw.githubusercontent.com/FakhirAhmedKhan/DataApi-main/refs/heads/main/data.json"
+      )
+      .then((res) => {
+        const projectList = res.data.projects || [];
+        setProjects(projectList);
 
-  const filteredProjects = useMemo(() => {
-    return activeCategory
-      ? projects.filter((p) => p.category === activeCategory)
-      : projects;
-  }, [projects, activeCategory]);
+        // Extract unique categories
+        const uniqueCats = Array.from(
+          new Set(projectList.map((p) => p.category))
+        );
+        setCategories(uniqueCats);
+
+        // Set first category as default
+        if (uniqueCats.length > 0) {
+          setActiveCategory(uniqueCats[0]);
+        }
+      })
+      .catch((err) => console.error("Error fetching projects:", err));
+  }, []);
+
+  // Filter projects by active category
+  const filteredProjects = activeCategory
+    ? projects.filter((p) => p.category === activeCategory)
+    : projects;
 
   return (
     <>
+      {/* Category buttons */}
       <div className="mb-12 flex flex-wrap justify-center gap-3 md:gap-4">
         {categories.map((cat) => {
-          const active = activeCategory === cat;
-          const buttonClass = `rounded-full px-4 py-2 text-sm md:text-base transition-all duration-300 ${
-            active
-              ? "bg-fuchsia-600 text-white shadow-lg"
-              : "bg-white/50 backdrop-blur-sm dark:bg-neutral-800/50"
-          }`;
+          const isActive = activeCategory === cat;
           return (
             <button
               key={cat}
               onClick={() => setActiveCategory(cat)}
-              className={buttonClass}
+              className={`rounded-full px-4 py-2 text-sm md:text-base transition-all duration-300 ${
+                isActive
+                  ? "bg-fuchsia-600 text-white shadow-lg"
+                  : "bg-white/50 backdrop-blur-sm dark:bg-neutral-800/50"
+              }`}
             >
               {cat}
             </button>
@@ -44,6 +59,7 @@ const ProjectFillterBtn = ({ projects }) => {
         })}
       </div>
 
+      {/* Project grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredProjects.map((project) => (
           <ProjectCard key={project.id} project={project} />
@@ -53,4 +69,4 @@ const ProjectFillterBtn = ({ projects }) => {
   );
 };
 
-export default ProjectFillterBtn;
+export default ProjectFilterBtn;

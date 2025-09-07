@@ -1,24 +1,21 @@
-import React from "react";
-
-const socialLinks = [
-  {
-    url: "https://github.com/FakhirAhmedKhan",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/refs/tags/v2.17.0/icons/github/github-original.svg",
-    label: "GitHub",
-  },
-  {
-    url: "https://linkedin.com/in/fakhir-ahmed-3b5537316",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/refs/tags/v2.17.0/icons/linkedin/linkedin-original.svg",
-    label: "LinkedIn",
-  },
-  {
-    url: "https://twitter.com/FakhirAhme41220",
-    icon: "https://raw.githubusercontent.com/devicons/devicon/refs/tags/v2.17.0/icons/twitter/twitter-original.svg",
-    label: "Twitter",
-  },
-];
+"use client";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const MediaIcons = () => {
+  const [socialLinks, setSocialLinks] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(
+        "https://raw.githubusercontent.com/FakhirAhmedKhan/DataApi-main/refs/heads/main/data.json"
+      )
+      .then((res) => {
+        setSocialLinks(res.data.socialLinks || []);
+      })
+      .catch((err) => console.error("Error fetching socialLinks:", err));
+  }, []);
+
   return (
     <div className="flex justify-center space-x-6 relative z-50">
       {socialLinks.map(({ url, icon, label }) => (
