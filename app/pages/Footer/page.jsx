@@ -1,11 +1,14 @@
+import { FooterHeader } from '@/app/components/FooterComponents/FooterHeader'
+import { FooterInput } from '@/app/components/FooterComponents/FooterInput'
 import React from 'react'
 
-const page = () => {
+const Footerpage = () => {
   return (
     <div>
-      page footer
+      <FooterHeader />
+      <FooterInput />
     </div>
   )
 }
 
-export default page
+export default Footerpage
