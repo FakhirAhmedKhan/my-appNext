@@ -1,11 +1,14 @@
+import SkillHeader from '@/app/components/SkillsComponents/SkillHeader'
+import {SkillLogo} from '@/app/components/SkillsComponents/SkillLogo';
 import React from 'react'
 
-const ToolsKillts = () => {
+const SkillPages = () => {
   return (
     <div>
-      ToolsKillts page
+      <SkillHeader />
+      <SkillLogo />
     </div>
   )
 }
 
-export default ToolsKillts
+export default SkillPages;
